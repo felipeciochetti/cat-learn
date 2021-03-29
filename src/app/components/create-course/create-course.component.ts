@@ -1,3 +1,4 @@
+import { MessagesService } from './../../services/messages.service';
 import { CreateModulesComponent } from './../create-modules/create-modules.component';
 import { CourseService } from 'src/app/services/course.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
@@ -7,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { UploadService } from 'src/app/services/upload.service';
 import { HttpEventType } from '@angular/common/http';
+import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
   selector: 'app-create-course',
@@ -25,7 +27,10 @@ export class CreateCourseComponent implements OnInit {
     private fb: FormBuilder,
     private courseService: CourseService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private uploadService: UploadService,
+    private messagesService: MessagesService,
+    private navigationService: NavigationService
   ) {}
 
   createCourseForm: FormGroup = this.fb.group({
@@ -54,9 +59,48 @@ export class CreateCourseComponent implements OnInit {
     // Make sure to create a deep copy of the form-model
     this.course = Object.assign({}, this.createCourseForm.value);
 
-    this.courseService.saveCourse(this.course, this.selectedFile);
+    if (this.isEdit) {
+      this.saveEditCourse();
+    } else {
+      this.saveNewCourse();
+    }
 
     //this.uploadService.uploadImage(this.selectedFile);
+  }
+  saveNewCourse() {
+    this.courseService.saveCourse(this.course, this.selectedFile).subscribe(
+      (newHero: Course) => {
+        if (this.selectedFile != null) {
+          this.uploadService.uploadImage(newHero.code, this.selectedFile);
+        }
+
+        this.messagesService.success('Salvo com Sucesso', null);
+        this.navigationService.navigateToCourseDetail(newHero.id);
+      },
+      error => {
+        this.messagesService.error(error.error, null);
+        console.log(error);
+      }
+    );
+  }
+  saveEditCourse() {
+    this.courseService
+      .updateCourse()
+
+      .subscribe(
+        (newHero: Course) => {
+          if (this.selectedFile != null) {
+            this.uploadService.uploadImage(newHero.code, this.selectedFile);
+          }
+
+          this.messagesService.success('Salvo com Sucesso', null);
+          this.navigationService.navigateToCourseDetail(newHero.id);
+        },
+        error => {
+          this.messagesService.error(error.error, null);
+          console.log(error);
+        }
+      );
   }
 
   onFileSelected(event) {

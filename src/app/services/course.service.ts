@@ -35,7 +35,6 @@ export class CourseService {
     private httpClient: HttpClient,
     private urlService: UrlsService,
     private navigationService: NavigationService,
-    private uploadService: UploadService,
     private messageService: MessagesService
   ) {}
 
@@ -87,15 +86,19 @@ export class CourseService {
 
   saveCourse(course: Course, selectedFile: string) {
     console.log('save ' + course);
-    return this.httpClient
-      .post(this.urlService.courseListUrl, course, this.httpOptions)
-      .subscribe((newHero: Course) => {
-        console.log(`added COURSE w/ id=${newHero.id}`);
-        this.uploadService.uploadImage(newHero.code, selectedFile);
-        this.navigationService.navigateToCourseDetail(newHero.id);
-      });
+    return this.httpClient.post(
+      this.urlService.courseListUrl,
+      course,
+      this.httpOptions
+    );
   }
-
+  updateCourse() {
+    return this.httpClient.put<Course>(
+      this.urlService.courseListUrl,
+      this.courseDetail,
+      this.httpOptions
+    );
+  }
   addModuleToCourseDetail(module: Module) {
     if (this.courseDetail.modules == null) {
       this.courseDetail.modules = [];
