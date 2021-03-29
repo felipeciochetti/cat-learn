@@ -1,0 +1,109 @@
+<mat-card>
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <img
+          src="{{ courseService.courseDetail.imageUrl }}"
+          class="detail-img"
+        />
+        <div>
+          <section>
+            <div class="example-label">
+              <h1 class="mat-h1">
+                <strong>
+                  {{ courseService.courseDetail.name }}
+                </strong>
+              </h1>
+            </div>
+            <div class="example-button-row">
+              <div class="example-flex-container">
+                <div class="example-button-container">
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    matTooltip="editar curso"
+                    aria-label="edit curso"
+                    (click)="editCourse()"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button
+                    mat-mini-fab
+                    color="warn"
+                    matTooltip="excluir curso"
+                    aria-label="delete curso"
+                    (click)="confirmDialogDelete()"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="mat-h3">
+            {{ courseService.courseDetail.description }}
+            <p>
+              {{ courseService.courseDetail.unitPrice | currency: "USD" }} |
+              {{ courseService.courseDetail.createdBy }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-8">
+        <mat-card>
+          <mat-card-content>
+            <mat-accordion>
+              <mat-expansion-panel
+                *ngFor="
+                  let module of courseService.courseDetail.modules;
+                  let i = index
+                "
+                hideToggle
+                (click)="setModuleDetail(module)"
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{ module.number }} | {{ module.name }}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{ module.description }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <p>lessons</p>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel
+                hideToggle
+                *ngIf="courseService.courseDetail.modules == null"
+                [class.text-danger]="courseService.courseDetail.modules == null"
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    No modules.
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card-content>
+
+          <div class="button-wrapper">
+            <button
+              mat-fab
+              color="primary"
+              matTooltip="criar modulo"
+              aria-label="create module"
+              routerLink="/{{ courseService.courseDetail.id }}/new-module"
+            >
+              <mat-icon>note_add</mat-icon>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <a routerLink="/courseServices" class="mt-5">Back to Courses List</a>
+  </div>
+</mat-card>

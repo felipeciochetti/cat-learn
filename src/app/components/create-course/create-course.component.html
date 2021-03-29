@@ -1,0 +1,99 @@
+<mat-card>
+  <div class="example-container">
+    <form [formGroup]="createCourseForm" ngxsForm="forms.createCourseForm">
+      <mat-card-content>
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div>
+                <img [src]="previewUrl" class="detail-img" />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-10">
+            <!-- TITLE -->
+            <mat-card-title *ngIf="!isEdit">{{
+              "labelNewCourse" | translate
+            }}</mat-card-title>
+            <mat-card-title *ngIf="isEdit">{{
+              "labelEditCourse" | translate
+            }}</mat-card-title>
+
+            <div>
+              <button type="button" mat-raised-button (click)="file.click()">
+                {{ "Choosefile" | translate }}
+              </button>
+              <input
+                hidden
+                #file
+                id="file"
+                type="file"
+                name="file"
+                formControlName="image"
+                (change)="onFileSelected($event)"
+              />
+              <!-- <p *ngIf="selectedFile != null">{{ selectedFile.name }}</p>-->
+            </div>
+            <mat-form-field>
+              <input matInput placeholder="Nome" formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Descrição"
+                formControlName="description"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Preço" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Data Liberação</mat-label>
+              <!-- #docregion toggle -->
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dateRelease"
+              />
+
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <!-- #enddocregion toggle -->
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Criado por"
+                formControlName="createdby"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Data"
+                value="{{ today | date: 'dd/MM/yyyy' }}"
+                [disabled]="true"
+              />
+            </mat-form-field>
+            <div class="button-wrapper">
+              <button
+                mat-fab
+                color="primary"
+                matTooltip="salvar curso"
+                aria-label="create curso"
+                (click)="createCourse()"
+              >
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </form>
+  </div>
+</mat-card>

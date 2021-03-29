@@ -1,0 +1,8 @@
+<div
+  *ngFor="let message of messageService.messages"
+  class="alert alert-success alert-dismissible fade show"
+  role="alert"
+>
+  <strong>{{ "sucess" | translate }} - {{ message }} </strong>
+  {{ "createdNewCourse" | translate }}
+</div>

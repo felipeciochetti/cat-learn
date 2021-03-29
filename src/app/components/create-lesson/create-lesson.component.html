@@ -1,0 +1,130 @@
+<mat-card>
+  <div class="example-container">
+    <form [formGroup]="createLessonForm" ngxsForm="forms.createLessonForm">
+      <mat-card-content>
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div>
+                <img
+                  [src]="courseService.courseDetail.imageUrl"
+                  class="detail-img"
+                />
+              </div>
+
+              <div style="text-align: center">
+                <h1 class="mat-h1">
+                  <strong>
+                    {{ courseService.courseDetail.name }}
+                  </strong>
+                </h1>
+
+                <h1>
+                  {{ courseService.getModuleDetail().number }} |
+                  {{ courseService.getModuleDetail().name }}
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <!-- TITLE -->
+            <mat-card-title *ngIf="!isEdit">{{
+              "labelNewLesson" | translate
+            }}</mat-card-title>
+            <mat-card-title *ngIf="isEdit">{{
+              "labelEditLesson" | translate
+            }}</mat-card-title>
+
+            <mat-form-field>
+              <input matInput placeholder="Numéro" formControlName="number" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput placeholder="Nome" formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Descrição"
+                formControlName="description"
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Data Liberação</mat-label>
+              <!-- #docregion toggle -->
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dateRelease"
+              />
+
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <!-- #enddocregion toggle -->
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Criado por"
+                formControlName="createdby"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Duração"
+                formControlName="duration"
+              />
+            </mat-form-field>
+
+            <div>
+              <button type="button" mat-raised-button (click)="file.click()">
+                {{ "Choosefile" | translate }}
+              </button>
+              <input
+                hidden
+                #file
+                id="file"
+                type="file"
+                name="file"
+                formControlName="fileLesson"
+                (change)="selectFile($event)"
+              />
+
+              <p *ngIf="selectedFiles != null">{{ selectedFiles.name }}</p>
+            </div>
+            <div
+              class="progress-bar progress-bar-info progress-bar-striped"
+              role="progressbar"
+              attr.aria-valuenow="{{ progress }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [ngStyle]="{ width: progress + '%' }"
+            >
+              {{ progress }}%
+            </div>
+
+            <div class="button-wrapper">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                matTooltip="salvar licao"
+                aria-label="create licao"
+                (click)="createLesson()"
+              >
+                Gravar
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </form>
+  </div>
+</mat-card>

@@ -1,0 +1,44 @@
+<mat-toolbar
+  color="primary"
+  class="mat-toolbar app-toolbar no-print mat-primary mat-toolbar-multiple-rows"
+>
+  <mat-toolbar-row class="mat-toolbar-row">
+    <!--
+      <button (click)="useLanguage('en')">en</button>
+      <button (click)="useLanguage('pt')">pt</button>
+      <i class="fas fa-language"></i>
+    -->
+    <button routerLink="/course" mat-button>
+      <span class="mat-button-wrapper">
+        <span>Cat Learn</span>
+      </span>
+    </button>
+
+    <button routerLink="/new-course" mat-button>
+      <span class="mat-button-wrapper">
+        <span>{{ "sidebar.newCourse" | translate }}</span>
+      </span>
+    </button>
+
+    <span class="example-spacer"></span>
+    <app-search-toolbar></app-search-toolbar>
+
+    <button mat-icon-button>
+      <mat-icon><i class="fas fa-user"></i></mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- <div class="form-header">
+  <input
+    #myInput
+    type="text"
+    placeholder="Search for products ..."
+    class="au-input au-input-xl"
+  />
+
+  <button class="au-btn-submit">
+    Search
+  </button>
+</div>
+-->

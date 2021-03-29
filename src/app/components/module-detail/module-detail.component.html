@@ -1,0 +1,54 @@
+<mat-card>
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <img src="{{ courseDetail.imageUrl }}" class="detail-img" />
+        <div style="text-align: center">
+          <h1 class="mat-h1">
+            <strong>
+              {{ courseDetail.name }}
+            </strong>
+          </h1>
+
+          <div class="mat-h3">
+            {{ courseDetail.description }}
+            <p>
+              {{ courseDetail.unitPrice | currency: "USD" }} |
+              {{ courseDetail.createdBy }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <h1>{{ moduleDetail.number }} | {{ moduleDetail.name }}</h1>
+
+        <mat-accordion>
+          <mat-expansion-panel
+            *ngFor="let lesson of moduleDetail.lessons; let i = index"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ lesson.name }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ lesson.description }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel
+            hideToggle
+            *ngIf="moduleDetail.lessons == null"
+            [class.text-danger]="moduleDetail.lessons == null"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Nenhuma Lição nesse Modulo.
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</mat-card>

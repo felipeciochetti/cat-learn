@@ -1,0 +1,95 @@
+<mat-card>
+  <div class="example-container">
+    <form [formGroup]="createModuleForm" ngxsForm="forms.createModuleForm">
+      <mat-card-content>
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div>
+                <img
+                  [src]="courseService.courseDetail.imageUrl"
+                  class="detail-img"
+                />
+              </div>
+              <div style="text-align: center">
+                <h1 class="mat-h1">
+                  <strong>
+                    {{ courseService.courseDetail.name }}
+                  </strong>
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <!-- TITLE -->
+            <mat-card-title *ngIf="!isEdit">{{
+              "labelNewModule" | translate
+            }}</mat-card-title>
+            <mat-card-title *ngIf="isEdit">{{
+              "labelEditModule" | translate
+            }}</mat-card-title>
+
+            <mat-form-field>
+              <input matInput placeholder="Numéro" formControlName="number" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput placeholder="Nome" formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Descrição"
+                formControlName="description"
+              />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Data Liberação</mat-label>
+              <!-- #docregion toggle -->
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dateRelease"
+              />
+
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <!-- #enddocregion toggle -->
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Criado por"
+                formControlName="createdby"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Duração"
+                formControlName="duration"
+              />
+            </mat-form-field>
+
+            <div class="button-wrapper">
+              <button
+                mat-fab
+                color="primary"
+                matTooltip="salvar modulo"
+                aria-label="create module"
+                (click)="createModule()"
+              >
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </form>
+  </div>
+</mat-card>

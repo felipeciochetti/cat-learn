@@ -1,0 +1,72 @@
+<mat-card>
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <img
+          src="{{ courseService.courseDetail.imageUrl }}"
+          class="detail-img"
+        />
+        <div style="text-align: center">
+          <h1>
+            <strong>
+              {{ courseService.courseDetail.name }}
+            </strong>
+          </h1>
+
+          <div class="mat-h3">
+            {{ courseService.courseDetail.description }}
+            <p>
+              {{ courseService.courseDetail.unitPrice | currency: "USD" }} |
+              {{ courseService.courseDetail.createdBy }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <h1>{{ "courseContent" | translate }}</h1>
+
+        <mat-accordion>
+          <mat-expansion-panel
+            *ngFor="
+              let module of courseService.courseDetail.modules;
+              let i = index
+            "
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ module.name }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ module.description }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item
+                *ngFor="let lesson of module.lessons"
+                style="cursor: pointer"
+                [routerLink]="['/lesson', module.id, lesson.id]"
+              >
+                <mat-icon matListIcon>play_circle_filled </mat-icon>
+                <span matLine style="color: black">
+                  {{ lesson.name }}
+                </span>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel
+            hideToggle
+            *ngIf="courseService.courseDetail.modules == null"
+            [class.text-danger]="courseService.courseDetail.modules == null"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                No modules.
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</mat-card>

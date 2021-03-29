@@ -1,0 +1,81 @@
+<mat-card>
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-8">
+        <div>
+          <section>
+            <div class="example-label">
+              <h1>
+                <strong>
+                  {{ courseService.lessonDetail.name }}
+                </strong>
+              </h1>
+            </div>
+            <div class="example-button-row">
+              <div class="example-flex-container">
+                <div class="example-button-container">
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    matTooltip="editar licao"
+                    aria-label="edit licao"
+                    (click)="editLesson()"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button
+                    mat-mini-fab
+                    color="warn"
+                    matTooltip="excluir licao"
+                    aria-label="excluir licao"
+                    (click)="deleteLesson()"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <youtube-player videoId="{{ courseService.lessonDetail.url }}">
+        </youtube-player>
+      </div>
+      <div class="col-sm-4 sidebar-panel">
+        <h1>{{ "courseContent" | translate }}</h1>
+
+        <mat-accordion>
+          <mat-expansion-panel
+            *ngFor="
+              let module of courseService.courseDetail.modules;
+              let i = index
+            "
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ module.name }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ module.description }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item
+                class="panel-lessons"
+                *ngFor="let lesson of module.lessons"
+                style="cursor: pointer"
+                (click)="setLessonDetail(lesson)"
+              >
+                <mat-icon matListIcon>play_circle_filled </mat-icon>
+                <span matLine style="color: black">
+                  {{ lesson.name }}
+                </span>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</mat-card>

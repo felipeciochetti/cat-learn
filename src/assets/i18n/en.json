@@ -1,0 +1,24 @@
+{
+  "appTitle": "Cat Lean",
+  "welcome": "Welcome to Cat Learn!",
+  "sucess": "Sucess",
+  "createdNewCourse": "Course Created",
+  "labelNewCourse": "New Course",
+  "labelModule": "Module",
+  "labelNewModule": "New Module",
+  "labelNewLesson": "New Lesson",
+
+  "labelEditLesson": "Edit Lesson",
+  "labelEditCourse": "Edit Course",
+  "labelSave": "save",
+  "courseContent": "Course Content",
+
+  "Choosefile": "Choose file",
+  "name": "name",
+  "number": "number",
+  "sidebar": {
+    "home": "Home",
+    "myCourse": "My course",
+    "newCourse": "New Course"
+  }
+}

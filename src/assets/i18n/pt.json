@@ -1,0 +1,23 @@
+{
+  "appTitle": "Cat Lean",
+  "welcome": "Bem Vindo ao Cat Learn!",
+  "sucess": "Sucesso",
+  "createdNewCourse": "Curso criado",
+  "labelModule": "Modulo",
+  "labelNewCourse": "Novo Curso",
+  "labelNewModule": "Novo Modulo",
+  "labelNewLesson": "Nova Lição ",
+  "labelEditCourse": "Editar Curso",
+  "labelEditModule": "Editar Module",
+  "labelEditLesson": "Editar Licao",
+  "courseContent": "Conteudo do Curso",
+  "labelSave": "salvar",
+  "Choosefile": "imagem de capa",
+  "name": "nome",
+  "number": "numero",
+  "sidebar": {
+    "home": "Principal",
+    "myCourse": "Meus Cursos",
+    "newCourse": "Novo Curso"
+  }
+}
