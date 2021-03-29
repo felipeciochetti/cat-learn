@@ -61,6 +61,7 @@ export class CourseEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
         this.deleteCourse();
+        console.log('');
       }
     });
   }
