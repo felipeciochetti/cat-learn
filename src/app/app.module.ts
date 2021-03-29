@@ -1,4 +1,3 @@
-import { SnackbarInterceptor } from './interceptor/SnackbarInterceptor';
 import { ModuleEditComponent } from './components/module-edit/module-edit.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';

@@ -1,3 +1,4 @@
+import { MessagesService } from 'src/app/services/messages.service';
 import { Module } from './../../model/module';
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from 'src/app/services/course.service';
@@ -20,8 +21,14 @@ export class CourseEditComponent implements OnInit {
     public courseService: CourseService,
     private route: ActivatedRoute,
     private navigationService: NavigationService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public messageService: MessagesService
   ) {}
+
+  options = {
+    autoClose: false,
+    keepAfterRouteChange: false
+  };
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -66,7 +73,15 @@ export class CourseEditComponent implements OnInit {
     });
   }
   deleteCourse() {
-    this.courseService.deleteCourse().subscribe();
-    this.navigationService.navigateToCourses();
+    this.courseService.deleteCourse().subscribe(
+      res => {
+        this.messageService.success('Deletado com Sucesso', this.options);
+        this.navigationService.navigateToCourses();
+      },
+      error => {
+        this.messageService.error(error.error, this.options);
+        console.log(error);
+      }
+    );
   }
 }
