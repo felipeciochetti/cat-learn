@@ -18,6 +18,7 @@ export class CreateLessonComponent implements OnInit {
   lesson: Lesson;
 
   isEdit = false;
+  isChangeFile = false;
 
   selectedFiles = null;
   currentFile: File;
@@ -61,13 +62,13 @@ export class CreateLessonComponent implements OnInit {
 
     this.lesson = Object.assign({}, this.createLessonForm.value);
 
-    if (this.lesson.id > 0) {
-      this.lessonService.updateLesson(this.lesson);
-    } else {
-      this.lessonService.saveLesson(this.lesson).subscribe(res => {
-        this.upload(res.code);
-      });
+    if(this.isEdit){
+      updateLesson();
+    }else{
+      saveNewLesson();
     }
+
+    
 
     this.lessonService.navigationToModule(
       this.courseService.courseDetail.id,
@@ -77,6 +78,7 @@ export class CreateLessonComponent implements OnInit {
 
   selectFile(event): void {
     this.selectedFiles = event.target.files[0];
+    this.isChangeFile = true;
   }
 
   upload(codeLesson: string): void {
@@ -119,3 +121,22 @@ export class CreateLessonComponent implements OnInit {
     this.courseService.handleCourseModuleLessonNew(theCourseId, theModuleId);
   }
 }
+function updateLesson() {
+
+  this.lessonService.updateLesson(this.lesson).subscribe(res => {
+    if(this.isChangeFile != null){
+      this.upload(res.code);
+    }
+
+  });
+
+
+}
+
+function saveNewLesson() {
+
+  this.lessonService.saveLesson(this.lesson).subscribe(res => {
+    this.upload(res.code);
+  });
+}
+
