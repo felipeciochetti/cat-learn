@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UrlsService {
-  private urlServer = 'http://localhost:8080/cbg/';
+  private urlServer = 'http://10.0.0.3:8080/cbg/';
   //private urlServer = '';
   public courseListUrl = this.urlServer + 'api/course';
   public courseListUrlByName = this.urlServer + 'api/course';
