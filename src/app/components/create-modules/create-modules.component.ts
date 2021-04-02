@@ -69,16 +69,14 @@ export class CreateModulesComponent implements OnInit {
     this.moduleService.saveModule(this.module).subscribe(
       (newHero: Module) => {
         this.messagesService.success('Salvo com Sucesso', null);
+        this.courseService.courseDetail.modules.push(newHero);
       },
       error => {
         this.messagesService.error(error.error, null);
         console.log(error);
       }
     );
-    this.navigationService.navigateToCourseDetail(
-      this.courseService.courseDetail.id
-    );
-  }
+   }
 
   handleCourseModuleEdit() {
     const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
