@@ -57,6 +57,8 @@ import {
 } from '@angular/material/core';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+ 
 
 const routes: Routes = [
   { path: 'new-course', component: CreateCourseComponent },
@@ -112,6 +114,7 @@ const routes: Routes = [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    CurrencyMaskModule,
     /*
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
