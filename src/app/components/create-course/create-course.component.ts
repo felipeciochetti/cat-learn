@@ -36,7 +36,7 @@ export class CreateCourseComponent implements OnInit {
   createCourseForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(6)]],
     imageUrl: ['', ''],
-
+    price: ['', [Validators.required, Validators.minLength(1)]],
     description: ['', [Validators.required, Validators.minLength(10)]],
     createdby: ['', [Validators.required, Validators.minLength(2)]],
     dateRelease: ['', [Validators.required, Validators.minLength(1)]]
