@@ -7,15 +7,17 @@ export class UrlsService {
   private urlServer = 'http://localhost:8080/cbg/';
   //private urlServer = '';
   public courseListUrl = this.urlServer + 'api/course';
-  public courseListUrlByName = 'api/course';
+  public courseListUrlByName = this.urlServer + 'api/course';
 
-  public module = 'api/module';
+  public module = this.urlServer + 'api/module';
 
-  public lesson = 'api/lesson';
+  public lesson = this.urlServer + 'api/lesson';
 
-  public searchCoursesUrl = 'api/course/';
+  public searchCoursesUrl = this.urlServer + 'api/course/';
 
-  public uploadImage = this.urlServer + 'upload/image';
+  public uploadImage = this.urlServer + 'api/upload/image';
+
+  public uploadContentLesson = this.urlServer + 'api/upload/lessonfile';
 
   public imageLogo = 'assets/images/logo/header-logo.jpg';
 

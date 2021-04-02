@@ -1,12 +1,18 @@
+import { Module } from './module';
+
 export class Lesson {
   id: number;
-  name: string;
   code: string;
+  name: string;
   description: string;
-  content: string;
-  url: string;
-  number: number;
-  moduleId: number;
-  duration: number;
-  fileLesson: string;
+  number: string;
+  dateRelease: Date;
+  dateCreated: Date;
+  lastUpdate: Date;
+  createdBy: string;
+  category: string;
+  duration: string;
+  contentFilePath: string;
+  contentFileName: string;
+  module: Module;
 }

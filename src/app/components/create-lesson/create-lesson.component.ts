@@ -1,3 +1,4 @@
+import { MessagesService } from 'src/app/services/messages.service';
 import { UploadService } from './../../services/upload.service';
 import { Lesson } from 'src/app/model/lesson';
 import { LessonsService } from 'src/app/services/lessons.service';
@@ -32,7 +33,8 @@ export class CreateLessonComponent implements OnInit {
     public navigationService: NavigationService,
     public uploadService: UploadService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messagesService: MessagesService
   ) {}
 
   createLessonForm: FormGroup = this.fb.group({
@@ -41,8 +43,8 @@ export class CreateLessonComponent implements OnInit {
     duration: ['', [Validators.required, Validators.minLength(1)]],
     description: ['', [Validators.required, Validators.minLength(5)]],
     dateRelease: [],
-    fileLesson: [],
-    createdby: []
+    contentFilePath: [],
+    createdBy: []
   });
 
   ngOnInit(): void {
@@ -62,13 +64,14 @@ export class CreateLessonComponent implements OnInit {
 
     this.lesson = Object.assign({}, this.createLessonForm.value);
 
-    if(this.isEdit){
-      updateLesson();
-    }else{
-      saveNewLesson();
-    }
+    this.lesson.contentFileName =
+      this.selectedFiles == null ? '' : this.selectedFiles.name;
 
-    
+    if (this.isEdit) {
+      this.updateLesson();
+    } else {
+      this.saveNewLesson();
+    }
 
     this.lessonService.navigationToModule(
       this.courseService.courseDetail.id,
@@ -84,20 +87,28 @@ export class CreateLessonComponent implements OnInit {
   upload(codeLesson: string): void {
     this.progress = 0;
 
-    this.uploadService.upload(codeLesson, this.selectedFiles).subscribe(
-      event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round((100 * event.loaded) / event.total);
-        } else if (event instanceof HttpResponse) {
-          this.message = event.body.message;
+    this.uploadService
+      .uploadContentLesson(
+        this.courseService.courseDetail.code,
+        this.courseService.moduleDetail.code,
+        codeLesson,
+        this.selectedFiles,
+        this.selectedFiles.name
+      )
+      .subscribe(
+        event => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round((100 * event.loaded) / event.total);
+          } else if (event instanceof HttpResponse) {
+            this.message = event.body.message;
+          }
+        },
+        err => {
+          this.progress = 0;
+          this.message = 'Could not upload the file!';
+          this.currentFile = undefined;
         }
-      },
-      err => {
-        this.progress = 0;
-        this.message = 'Could not upload the file!';
-        this.currentFile = undefined;
-      }
-    );
+      );
     this.selectedFiles = undefined;
   }
 
@@ -120,23 +131,29 @@ export class CreateLessonComponent implements OnInit {
 
     this.courseService.handleCourseModuleLessonNew(theCourseId, theModuleId);
   }
+
+  updateLesson() {
+    this.lessonService.updateLesson(this.lesson).subscribe(res => {
+      if (this.isChangeFile != null) {
+        // this.upload(res.code);
+      }
+    });
+  }
+
+  saveNewLesson() {
+    this.lessonService.saveLesson(this.lesson).subscribe(
+      (newHero: Lesson) => {
+        if (this.selectedFiles != null) {
+          this.upload(newHero.code);
+        }
+
+        this.messagesService.success('Salvo com Sucesso', null);
+      },
+      error => {
+        this.messagesService.error(error.error, null);
+        console.log(error);
+      }
+    );
+    //
+  }
 }
-function updateLesson() {
-
-  this.lessonService.updateLesson(this.lesson).subscribe(res => {
-    if(this.isChangeFile != null){
-      this.upload(res.code);
-    }
-
-  });
-
-
-}
-
-function saveNewLesson() {
-
-  this.lessonService.saveLesson(this.lesson).subscribe(res => {
-    this.upload(res.code);
-  });
-}
-

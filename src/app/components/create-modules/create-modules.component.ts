@@ -1,3 +1,6 @@
+import { NavigationService } from 'src/app/services/navigation.service';
+import { UrlsService } from './../../services/urls.service';
+import { MessagesService } from './../../services/messages.service';
 import { ModulesService } from './../../services/modules.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
@@ -22,7 +25,9 @@ export class CreateModulesComponent implements OnInit {
     private moduleService: ModulesService,
     public courseService: CourseService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messagesService: MessagesService,
+    private navigationService: NavigationService
   ) {}
 
   createModuleForm: FormGroup = this.fb.group({
@@ -54,10 +59,25 @@ export class CreateModulesComponent implements OnInit {
     if (this.module.id > 0) {
       this.moduleService.updateModule(this.module);
     } else {
-      this.moduleService.saveModule(this.module);
+      this.saveNewModule();
     }
 
     this.moduleService.navigationToCourse();
+  }
+
+  saveNewModule() {
+    this.moduleService.saveModule(this.module).subscribe(
+      (newHero: Module) => {
+        this.messagesService.success('Salvo com Sucesso', null);
+      },
+      error => {
+        this.messagesService.error(error.error, null);
+        console.log(error);
+      }
+    );
+    this.navigationService.navigateToCourseDetail(
+      this.courseService.courseDetail.id
+    );
   }
 
   handleCourseModuleEdit() {

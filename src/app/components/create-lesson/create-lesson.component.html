@@ -20,8 +20,8 @@
                 </h1>
 
                 <h1>
-                  {{ courseService.getModuleDetail().number }} |
-                  {{ courseService.getModuleDetail().name }}
+                  {{ courseService.moduleDetail.number }} |
+                  {{ courseService.moduleDetail.name }}
                 </h1>
               </div>
             </div>
@@ -71,7 +71,7 @@
               <input
                 matInput
                 placeholder="Criado por"
-                formControlName="createdby"
+                formControlName="createdBy"
               />
             </mat-form-field>
             <mat-form-field>
@@ -92,7 +92,7 @@
                 id="file"
                 type="file"
                 name="file"
-                formControlName="fileLesson"
+                formControlName="contentFilePath"
                 (change)="selectFile($event)"
               />
 

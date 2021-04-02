@@ -47,19 +47,16 @@ export class ModulesService {
   }
 
   saveModule(module: Module) {
-    if (module.courseId == null) {
+    if (module.idCourse == null) {
       this.setIdCourse(module);
     }
 
     console.log('save module ' + module.name);
-    return this.httpClient
-      .post(this.urlService.module, module, this.httpOptions)
-      .pipe(
-        tap((newmodule: Module) =>
-          console.log(`added module w/ id=${newmodule.id}`)
-        ),
-        catchError(this.handleError<Module>('addCourse'))
-      );
+    return this.httpClient.post(
+      this.urlService.module,
+      module,
+      this.httpOptions
+    );
   }
 
   updateModule(module: Module) {
@@ -84,7 +81,8 @@ export class ModulesService {
   }
 
   setIdCourse(module: Module) {
-    module.courseId == this.courseService.courseDetail.id;
+    //module.idCourse = this.courseService.courseDetail.id;
+    module.course = this.courseService.courseDetail;
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

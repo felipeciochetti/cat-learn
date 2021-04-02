@@ -35,19 +35,16 @@ export class LessonsService {
     return this.courseService.getCourseDetail();
   }
 
-  saveLesson(lesson: Lesson): Observable<Lesson> {
-    if (lesson.moduleId == null) {
+  saveLesson(lesson: Lesson) {
+    if (lesson.module == null) {
       this.setIdModule(lesson);
     }
 
-    return this.httpClient
-      .post(this.urlService.lesson, lesson, this.httpOptions)
-      .pipe(
-        tap((newmodule: Lesson) =>
-          console.log(`added lesson w/ id=${newmodule.id}`)
-        ),
-        catchError(this.handleError<Lesson>('addCourse'))
-      );
+    return this.httpClient.post(
+      this.urlService.lesson,
+      lesson,
+      this.httpOptions
+    );
   }
 
   updateLesson(lesson: Lesson) {
@@ -66,7 +63,7 @@ export class LessonsService {
   }
 
   setIdModule(lesson: Lesson) {
-    lesson.moduleId == this.courseService.getModuleDetail().id;
+    lesson.module = this.courseService.moduleDetail;
   }
 
   editLesson() {

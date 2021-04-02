@@ -35,7 +35,7 @@ export class CreateCourseComponent implements OnInit {
 
   createCourseForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(6)]],
-    image: ['', ''],
+    imageUrl: ['', ''],
 
     description: ['', [Validators.required, Validators.minLength(10)]],
     createdby: ['', [Validators.required, Validators.minLength(2)]],
@@ -75,13 +75,13 @@ export class CreateCourseComponent implements OnInit {
         }
 
         this.messagesService.success('Salvo com Sucesso', null);
-        this.navigationService.navigateToCourseDetail(newHero.id);
       },
       error => {
         this.messagesService.error(error.error, null);
         console.log(error);
       }
     );
+    this.navigationService.navigateToCourses();
   }
   saveEditCourse() {
     this.courseService

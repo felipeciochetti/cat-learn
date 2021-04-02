@@ -39,4 +39,37 @@ export class UploadService {
 
     return this.httpClient.request(req);
   }
+
+  uploadContentLesson(
+    codeCourse: string,
+    codeModule: string,
+    codeLesson: string,
+    selectedFile: string,
+    selectedFileName: string
+  ): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', selectedFile);
+    formData.append('fileName', selectedFileName);
+
+    const req = new HttpRequest(
+      'POST',
+      this.urlService.uploadContentLesson +
+        '/' +
+        codeCourse +
+        '/' +
+        codeModule +
+        '/' +
+        codeLesson +
+        '/' +
+        selectedFileName,
+      formData,
+      {
+        reportProgress: true,
+        responseType: 'json'
+      }
+    );
+
+    return this.httpClient.request(req);
+  }
 }

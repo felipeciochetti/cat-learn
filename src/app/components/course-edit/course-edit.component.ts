@@ -46,7 +46,7 @@ export class CourseEditComponent implements OnInit {
   setModuleDetail(moduleDetail: Module) {
     this.courseService.setModuleDEtail(moduleDetail);
     this.navigationService.navigateToModuleDetail(
-      moduleDetail.courseId,
+      moduleDetail.idCourse,
       moduleDetail.id
     );
   }

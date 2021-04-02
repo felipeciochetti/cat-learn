@@ -29,7 +29,7 @@
                     color="warn"
                     matTooltip="excluir licao"
                     aria-label="excluir licao"
-                    (click)="deleteLesson()"
+                    (click)="confirmDialogDelete()"
                   >
                     <mat-icon>delete</mat-icon>
                   </button>
@@ -39,7 +39,14 @@
           </section>
         </div>
 
-        <youtube-player videoId="{{ courseService.lessonDetail.url }}">
+        <pdf-viewer
+          [src]="courseService.lessonDetail.contentFilePath"
+          [original-size]="false"
+        ></pdf-viewer>
+
+        <youtube-player
+          videoId="{{ courseService.lessonDetail.contentFilePath }}"
+        >
         </youtube-player>
       </div>
       <div class="col-sm-4 sidebar-panel">

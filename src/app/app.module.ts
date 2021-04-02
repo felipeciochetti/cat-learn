@@ -48,6 +48,7 @@ import { Data } from './model/data';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {
   MatNativeDateModule,
   MatRippleModule,
@@ -141,6 +142,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatIconModule,
     MatExpansionModule,
+    PdfViewerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

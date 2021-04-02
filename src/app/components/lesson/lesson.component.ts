@@ -8,6 +8,12 @@ import { Course } from 'src/app/model/course';
 import { Module } from 'src/app/model/module';
 import { UrlsService } from 'src/app/services/urls.service';
 import { NavigationService } from 'src/app/services/navigation.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MessagesService } from 'src/app/services/messages.service';
+import {
+  ConfirmDialogModel,
+  ConfirmDialogComponent
+} from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-lesson',
@@ -19,7 +25,9 @@ export class LessonComponent implements OnInit {
     public lessonService: LessonsService,
     public courseService: CourseService,
     public navigationService: NavigationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    public messageService: MessagesService
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +54,37 @@ export class LessonComponent implements OnInit {
   editLesson() {
     this.lessonService.editLesson();
   }
+
+  confirmDialogDelete(): void {
+    const message = `Deseja deletar a Licao?`;
+
+    const dialogData = new ConfirmDialogModel('Confirmar', message);
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '400px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.deleteLesson();
+        console.log('');
+      }
+    });
+  }
   deleteLesson() {
-    this.lessonService.deleteLesson();
+    this.lessonService.deleteLesson().subscribe(
+      res => {
+        this.messageService.success('Deletado com Sucesso', null);
+        this.navigationService.navigateToModuleDetail(
+          this.courseService.courseDetail.id,
+          this.courseService.moduleDetail.id
+        );
+      },
+      error => {
+        this.messageService.error(error.error, null);
+        console.log(error);
+      }
+    );
   }
 }
