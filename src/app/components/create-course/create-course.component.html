@@ -49,9 +49,13 @@
               <input
                 matInput
                 currencyMask
-                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' ,align:'left'}"
+                [options]="{
+                  prefix: 'R$ ',
+                  thousands: '.',
+                  decimal: ',',
+                  align: 'left'
+                }"
                 placeholder="Preço"
-                value=""
                 formControlName="price"
               />
             </mat-form-field>

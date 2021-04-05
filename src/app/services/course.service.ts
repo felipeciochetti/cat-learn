@@ -94,7 +94,7 @@ export class CourseService {
   }
   updateCourse() {
     return this.httpClient.put<Course>(
-      this.urlService.courseListUrl,
+      this.urlService.courseListUrl + '/' + this.courseDetail.id,
       this.courseDetail,
       this.httpOptions
     );

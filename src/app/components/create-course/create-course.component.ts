@@ -52,7 +52,8 @@ export class CreateCourseComponent implements OnInit {
   }
 
   createCourse() {
-    if (!this.createCourseForm.valid) {
+    if (!this.createCourseForm.valid && !this.isEdit) {
+      console.log(this.createCourseForm.valid);
       return;
     }
 
@@ -84,23 +85,20 @@ export class CreateCourseComponent implements OnInit {
     this.navigationService.navigateToCourses();
   }
   saveEditCourse() {
-    this.courseService
-      .updateCourse()
-
-      .subscribe(
-        (newHero: Course) => {
-          if (this.selectedFile != null) {
-            this.uploadService.uploadImage(newHero.code, this.selectedFile);
-          }
-
-          this.messagesService.success('Salvo com Sucesso', null);
-          this.navigationService.navigateToCourseDetail(newHero.id);
-        },
-        error => {
-          this.messagesService.error(error.error, null);
-          console.log(error);
+    this.courseService.updateCourse().subscribe(
+      (newHero: Course) => {
+        if (this.selectedFile != null) {
+          this.uploadService.uploadImage(newHero.code, this.selectedFile);
         }
-      );
+
+        this.messagesService.success('Salvo com Sucesso', null);
+        this.navigationService.navigateToCourseDetail(newHero.id);
+      },
+      error => {
+        this.messagesService.error(error.error, null);
+        console.log(error);
+      }
+    );
   }
 
   onFileSelected(event) {
