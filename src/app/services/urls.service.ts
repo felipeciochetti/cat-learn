@@ -4,22 +4,38 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UrlsService {
-  private urlServer = 'http://10.0.0.3:8080/cbg/';
-  //private urlServer = '';
-  public courseListUrl = this.urlServer + 'api/course';
-  public courseListUrlByName = this.urlServer + 'api/course';
+  private urlServer = 'http://localhost:8080/';
+  //private urlServer = 'http://www.catsys.com.br/cbg/';
 
-  public module = this.urlServer + 'api/module';
+
+  private  course = 'courses';
+
+
+  //private urlServer = '';
+  public courseListUrl = this.urlServer + this.course;
+
+  
+  public module = this.urlServer + 'module';
 
   public lesson = this.urlServer + 'api/lesson';
 
-  public searchCoursesUrl = this.urlServer + 'api/course/';
+  public searchCoursesUrl = this.urlServer + 'api/course/search';
 
-  public uploadImage = this.urlServer + 'api/upload/image';
+  public streamLessonUrl = this.urlServer + 'api/stream/stream/';
+
+  public pdfLessonUrl = this.urlServer + 'api/lesson/pdfLesson/';
+
+
+  public uploadImageCourse = this.urlServer + this.course + '/course-img';
 
   public uploadContentLesson = this.urlServer + 'api/upload/lessonfile';
 
   public imageLogo = 'assets/images/logo/header-logo.jpg';
 
   constructor() {}
+
+
+  public getUrlImageCapa(id:number){
+    return this.courseListUrl +'/' + id + '/imageCapa';
+  }
 }

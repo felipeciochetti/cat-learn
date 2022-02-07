@@ -1,0 +1,8 @@
+
+
+         {{ userFullName }}
+
+
+    <button mat-icon-button *ngIf="!isAuthenticated" routerLink="/login" ><mat-icon><i class="fas fa-user"></i></mat-icon></button>
+
+    <button mat-icon-button *ngIf="isAuthenticated" (click)="logout()" ><mat-icon><i class="fas fa-user"></i></mat-icon></button>

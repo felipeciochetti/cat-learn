@@ -22,6 +22,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 */
+.currentLesson{
+  background-color: #e6f2f5;
+}
+
+.fill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden
+}
+.fill img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%
+}
 
 ul {
   margin: 0;
@@ -46,50 +61,6 @@ button {
   background: 0 0;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-p {
-  margin: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #333;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
-}
-
-h1 {
-  font-size: 56px;
-}
-
-h2 {
-  font-size: 30px;
-}
-
-h3 {
-  font-size: 24px;
-}
-
-h4 {
-  font-size: 18px;
-}
-
-h5 {
-  font-size: 15px;
-}
-
-h6 {
-  font-size: 13px;
-}
 
 a {
   display: inline-block;
@@ -949,10 +920,11 @@ footer ul li {
 }
 
 .example-container .mat-form-field {
-  width: 50%;
+  width: 100%;
 }
 
 .example-container form {
+  
   margin-bottom: 20px;
 }
 

@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { CourseService } from './course.service';
 import { FormGroup } from '@angular/forms';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,50 +27,51 @@ export class ModulesService {
     private messageService: MessagesService
   ) {}
 
-  getModuleList(): Observable<Module[]> {
+
+  saveModule(module: Module, idCourse: number) {
+    console.log('save ' + module.name);
+    return this.httpClient.post(
+      this.urlService.courseListUrl + '/' + idCourse + '/module',
+      module,
+      this.httpOptions
+    );
+  }
+  
+  getModuleList( idCourse: number): Observable<Module[]> {
     // need to build URL based on category id
     const moduleListUrl = this.urlService.module;
 
     return this.httpClient
-      .get<Module[]>(moduleListUrl)
+      .get<Module[]>(this.urlService.courseListUrl +'/'+idCourse + '/modules')
       .pipe(tap(_ => console.log('fetched module')));
   }
 
-  editModule() {
-    this.navigationService.navigateToModuleEdit(
-      this.courseService.courseDetail.id,
-      this.courseService.moduleDetail.id
-    );
+  getModule(idCourse: number,idModule: number): Observable<Module> {
+    const courseListUrl = this.urlService.courseListUrl;
+
+    return this.httpClient.get<Module>(courseListUrl + '/' + idCourse + '/module/' + idModule);
+
+    
   }
 
+ 
   setDataForm(createModuleForm: FormGroup) {
     createModuleForm.patchValue(this.courseService.moduleDetail);
   }
 
-  saveModule(module: Module) {
-    if (module.idCourse == null) {
-      this.setIdCourse(module);
-    }
-
-    console.log('save module ' + module.name);
-    return this.httpClient.post(
-      this.urlService.module,
-      module,
-      this.httpOptions
-    );
-  }
-
-  updateModule(module: Module) {
+  
+  updateModule(module: Module, idCourse: number) {
+    console.log('update module')
     return this.httpClient.put(
-      this.urlService.module + '/' + module.id,
+      this.urlService.courseListUrl + '/' + idCourse +'/module/'+ module.id,
       module,
       this.httpOptions
     );
   }
 
-  deleteModule() {
+  deleteModule(idCourse: number,idModule: number) {
     return this.httpClient.delete(
-      this.urlService.module + '/' + this.courseService.moduleDetail.id,
+      this.urlService.courseListUrl + '/' + idCourse +'/module/'+ idModule,
       this.httpOptions
     );
   }
@@ -80,10 +82,8 @@ export class ModulesService {
     );
   }
 
-  setIdCourse(module: Module) {
-    //module.idCourse = this.courseService.courseDetail.id;
-    module.course = this.courseService.courseDetail;
-  }
+
+
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

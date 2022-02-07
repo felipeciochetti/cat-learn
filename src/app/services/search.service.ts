@@ -7,7 +7,5 @@ import { Injectable } from '@angular/core';
 export class SearchService {
   constructor(private urlsService: UrlsService) {}
 
-  getUrlSearch() {
-    return this.urlsService.searchCoursesUrl;
-  }
+
 }

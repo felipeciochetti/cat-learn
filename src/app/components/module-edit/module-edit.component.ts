@@ -50,12 +50,9 @@ export class ModuleEditComponent implements OnInit {
     );
   }
 
-  editModule() {
-    this.modulesService.editModule();
-  }
-
+  
   confirmDialogDelete(): void {
-    const message = `Deseja deletar a Licao?`;
+    const message = `Deseja deletar a Modulo?`;
 
     const dialogData = new ConfirmDialogModel('Confirmar', message);
 
@@ -70,13 +67,12 @@ export class ModuleEditComponent implements OnInit {
       }
     });
   }
+  
   deleteModule() {
-    this.modulesService.deleteModule().subscribe(
+    this.modulesService.deleteModule(0,0).subscribe(
       res => {
         this.messageService.success('Deletado com Sucesso', null);
-        this.navigationService.navigateToCourseDetail(
-          this.courseService.courseDetail.id
-        );
+        this.navigationService.navigateToCourses();
       },
       error => {
         this.messageService.error(error.error, null);
@@ -84,4 +80,16 @@ export class ModuleEditComponent implements OnInit {
       }
     );
   }
+
+
+  sortedLessons(): Lesson[] {
+    this.courseService.moduleDetail.lessons.sort((a,b) => a.number.localeCompare(b.number));
+    return this.courseService.moduleDetail.lessons;
+  }
+  
+  public getUrlImageCapa(id:number){
+    return this.courseService.getUrlImageCapa(id);
+  }
+
+  
 }

@@ -2,15 +2,20 @@ import { Module } from './module';
 
 export class Course {
   id: number;
+  code: string;
   name: string;
   description: string;
-  unitPrice: number;
+  price: number;
   imageUrl: string;
   dateCreated: Date;
+  dateRelease: Date;
   lastUpdate: Date;
   createdBy: string;
   category: string;
-  code: string;
-  dateRelease: Date;
+  unitPrice: number;
+  
+  
   modules: Module[];
+  imageToShow: any;
+
 }

@@ -6,12 +6,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { HeaderComponent } from './components/header/header.component';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router } from '@angular/router';
 import { CourseListComponent } from './components/course-list/course-list.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -49,7 +52,10 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 
 
 import {
@@ -60,34 +66,64 @@ import {
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { CurrencyMaskModule } from "ng2-currency-mask";
+import { VideoPlayComponent } from './components/video-play/video-play.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
+import { CartStatusComponent } from './components/cart-status/cart-status.component';
+import { CartDetailsComponent } from './components/cart-details/cart-details.component';
+import { LoginComponent } from './components/login/login.component';
+import { LoginStatusComponent } from './components/login-status/login-status.component';
+import { OktaAuthModule, OktaCallbackComponent, OKTA_CONFIG } from '@okta/okta-angular';
+import catLearnConfig from './config/cat-learn-config';
  
 
-const routes: Routes = [
-  { path: 'new-course', component: CreateCourseComponent },
-  { path: ':idCourse/new-module', component: CreateModulesComponent },
-  { path: ':idCourse/:idModule/new-lesson', component: CreateLessonComponent },
+const oktaConfig = Object.assign({
+  onAuthRequired: (oktaAuth, injector) => {
+    const router = injector.get(Router);
 
-  { path: 'courses/:id', component: CourseEditComponent },
-  { path: 'module/:idCourse/:idModule', component: ModuleEditComponent },
+    // Redirect the user to your custom login page
+    router.navigate(['/login']);
+  }
+}, catLearnConfig.oidc);
+
+
+const routes: Routes = [
+
+
+  { path: 'new-course', component: CreateCourseComponent },
+  { path: 'course/:idCourse/new-module', component: CreateModulesComponent },
+  { path: 'module/:idModule/new-lesson', component: CreateLessonComponent },
+
+  { path: 'courses/:id', component: CourseDetailComponent },
+  { path: 'courses/:idCourse/edit-course', component: CreateCourseComponent },
+
+
+  { path: 'courses/:idCourse/edit-module/:idModule', component: CreateModulesComponent },
+
+  { path: 'module/:idModule/edit-lesson/:idLesson', component: CreateLessonComponent },
+
+  { path: 'courses/:idCourse/module/:idModule', component: ModuleDetailComponent },
+
+
   { path: 'lesson/:idCourse/:idModule/:idLesson', component: LessonComponent },
 
-  {
-    path: 'edit-course/:idCourse',
-    component: CreateCourseComponent
-  },
-  {
-    path: 'edit-lesson/:idCourse/:idModule/:idLesson',
-    component: CreateLessonComponent
-  },
-  {
-    path: 'edit-module/:idCourse/:idModule',
-    component: CreateModulesComponent
-  },
+  {path: 'login/callback', component: OktaCallbackComponent},
+  {path: 'login', component: LoginComponent},
+
+  { path: 'cart-details', component: CartDetailsComponent },
 
   { path: 'courses', component: CourseListComponent },
-  { path: 'search/:keyword', component: CourseListComponent },
+  { path: 'course/search/:name', component: CourseListComponent },
   { path: '', redirectTo: '/courses', pathMatch: 'full' },
-  { path: '**', redirectTo: '/courses', pathMatch: 'full' }
+  { path: '**', redirectTo: '/courses', pathMatch: 'full' },
+
+
+  //USER = MEANS USER LOGADO
+
+
+  // VISITOR = MEANS VISITOR
+
+  { path: 'visitor/courses', component: CourseListComponent },
+
 ];
 
 @NgModule({
@@ -109,7 +145,13 @@ const routes: Routes = [
     ModuleEditComponent,
     LessonComponent,
     ConfirmDialogComponent,
-    ToastComponent
+    ToastComponent,
+    VideoPlayComponent,
+    CarouselComponent,
+    CartStatusComponent,
+    CartDetailsComponent,
+    LoginComponent,
+    LoginStatusComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -117,12 +159,18 @@ const routes: Routes = [
     AppRoutingModule,
     HttpClientModule,
     CurrencyMaskModule,
+    FlexLayoutModule,
     /*
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
       passThruUnknownUrl: true
     }),
-*/
+    */
+    CarouselModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
     BrowserAnimationsModule,
     YouTubePlayerModule,
     MatNativeDateModule,
@@ -150,6 +198,8 @@ const routes: Routes = [
     MatIconModule,
     MatExpansionModule,
     PdfViewerModule,
+    OktaAuthModule,
+ 
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -158,7 +208,7 @@ const routes: Routes = [
       }
     })
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-br' }],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-br' },{ provide: OKTA_CONFIG, useValue: oktaConfig }],
   bootstrap: [AppComponent],
   entryComponents: [ToastComponent]
 })

@@ -16,6 +16,8 @@ import { Course } from '../model/course';
   providedIn: 'root'
 })
 export class LessonsService {
+
+ 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -31,67 +33,52 @@ export class LessonsService {
     private messageService: MessagesService
   ) {}
 
-  getCurrrentCourse() {
-    return this.courseService.getCourseDetail();
-  }
 
-  saveLesson(lesson: Lesson) {
-    if (lesson.module == null) {
-      this.setIdModule(lesson);
-    }
-
+  saveLesson(lesson: Lesson, idModule: number) {
+    console.log('save ' + lesson.name);
     return this.httpClient.post(
-      this.urlService.lesson,
+      this.urlService.module + '/' + idModule + '/lesson',
       lesson,
       this.httpOptions
     );
   }
 
-  updateLesson(lesson: Lesson) {
+  updateLesson(lesson: Lesson, idModule: number) {
+    console.log('update lesson')
     return this.httpClient.put(
-      this.urlService.lesson + '/' + lesson.id,
+      this.urlService.module + '/' + idModule +'/lesson/'+ lesson.id,
       lesson,
       this.httpOptions
     );
   }
+  
 
-  deleteLesson() {
+  deleteLesson(idLesson: number, idModule: number) {
     return this.httpClient.delete(
-      this.urlService.lesson + '/' + this.courseService.lessonDetail.id,
+      this.urlService.module + '/' + idModule + '/lesson/' + idLesson,
       this.httpOptions
     );
   }
 
-  setIdModule(lesson: Lesson) {
-    lesson.module = this.courseService.moduleDetail;
-  }
+  
 
-  editLesson() {
-    this.navigationService.navigateToLessonEdit(
-      this.courseService.courseDetail.id,
-      this.courseService.moduleDetail.id,
-      this.courseService.lessonDetail.id
-    );
-  }
 
   setDataForm(createLessonForm: FormGroup) {
     createLessonForm.patchValue(this.courseService.lessonDetail);
   }
 
-  navigationToModule(idCourse: number, idModule: number) {
-    this.navigationService.navigateToModuleDetail(idCourse, idModule);
+  
+
+  
+  getContentStreamLesson() {
+
+    return this.urlService.streamLessonUrl + this.courseService.lessonDetail.id
+    
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+  getContentPdfLesson() {
 
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+    return this.urlService.pdfLessonUrl + this.courseService.lessonDetail.id
+    
   }
 }

@@ -1,6 +1,8 @@
 <mat-card>
+  
   <div class="example-container">
     <form [formGroup]="createCourseForm" ngxsForm="forms.createCourseForm">
+  
       <mat-card-content>
         <div class="row">
           <div class="col-sm-2">
@@ -34,10 +36,15 @@
               />
               <!-- <p *ngIf="selectedFile != null">{{ selectedFile.name }}</p>-->
             </div>
+            
+
+          <div class="row">
+              <div class="col-md-6">
             <mat-form-field>
               <input matInput placeholder="Nome" formControlName="name" />
             </mat-form-field>
-
+          </div>
+          <div class="col-md-6">
             <mat-form-field>
               <input
                 matInput
@@ -45,6 +52,10 @@
                 formControlName="description"
               />
             </mat-form-field>
+          </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
             <mat-form-field>
               <input
                 matInput
@@ -59,7 +70,9 @@
                 formControlName="price"
               />
             </mat-form-field>
-
+            </div>
+            
+              <div class="col-md-6">
             <mat-form-field>
               <mat-label>Data Liberação</mat-label>
               <!-- #docregion toggle -->
@@ -68,7 +81,7 @@
                 [matDatepicker]="picker"
                 formControlName="dateRelease"
               />
-
+              
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker"
@@ -76,6 +89,10 @@
               <mat-datepicker #picker></mat-datepicker>
               <!-- #enddocregion toggle -->
             </mat-form-field>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
             <mat-form-field>
               <input
                 matInput
@@ -83,6 +100,9 @@
                 formControlName="createdby"
               />
             </mat-form-field>
+            </div>
+            
+              <div class="col-md-6">
             <mat-form-field>
               <input
                 matInput
@@ -91,6 +111,10 @@
                 [disabled]="true"
               />
             </mat-form-field>
+            </div>
+            </div>
+            
+            
             <div class="button-wrapper">
               <button
                 type="button"
@@ -99,8 +123,10 @@
                 matTooltip="salvar curso"
                 aria-label="create curso"
                 (click)="createCourse()"
+
               >
-                <mat-icon>save</mat-icon>
+                
+                Salvar
               </button>
             </div>
           </div>

@@ -2,71 +2,56 @@
   <div class="example-container">
     <div class="row">
       <div class="col-sm-4">
-        <img
-          src="{{ courseService.courseDetail.imageUrl }}"
-          class="detail-img"
-        />
-        <div style="text-align: center">
-          <h1 class="mat-h1">
-            <strong>
-              {{ courseService.courseDetail.name }}
-            </strong>
-          </h1>
-
-          <div class="mat-h3">
-            {{ courseService.courseDetail.description }}
-            <p>
-              {{ courseService.courseDetail.unitPrice | currency: "USD" }} |
-              {{ courseService.courseDetail.createdBy }}
-            </p>
+        <div>
+          <div class="col">
+            <img
+              [src]="getUrlImageCapa(courseService.courseDetail.id)"
+              class="img-fluid"
+            />
           </div>
+        </div>
+        <div>
+          <div class="col">
+            <h1 class="mat-h1">
+              <strong>
+                {{ courseService.courseDetail.name }}
+              </strong>
+            </h1>
+            <h1 class="mat-h1">
+              <strong>
+                {{ courseService.moduleDetail.name }}
+              </strong>
+            </h1>
+          </div>
+        </div>
+        <div class="col">
+          <mat-divider></mat-divider>
+          <button
+            mat-stroked-button
+            color="primary"
+            matTooltip="editar modulo"
+            aria-label="edit module"
+          >
+            editar
+          </button>
+
+          <button
+            mat-stroked-button
+            color="warn"
+            matTooltip="excluir modulo"
+            aria-label="delete modulo"
+            (click)="confirmDialogDelete()"
+          >
+            excluir
+          </button>
         </div>
       </div>
       <div class="col-sm">
-        <section>
-          <div class="example-label">
-            <h1>
-              <strong
-                >{{ courseService.moduleDetail.number }} |
-                {{ courseService.moduleDetail.name }}</strong
-              >
-            </h1>
-          </div>
-          <div class="example-button-row">
-            <div class="example-flex-container">
-              <div class="example-button-container">
-                <button
-                  mat-mini-fab
-                  color="primary"
-                  matTooltip="editar modulo"
-                  aria-label="edit module"
-                  (click)="editModule()"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-
-                <button
-                  mat-mini-fab
-                  color="warn"
-                  matTooltip="excluir modulo"
-                  aria-label="delete modulo"
-                  (click)="deleteModule()"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <mat-card>
           <mat-card-content>
             <mat-accordion>
               <mat-expansion-panel
-                *ngFor="
-                  let lesson of courseService.moduleDetail.lessons;
-                  let i = index
-                "
+                *ngFor="let lesson of sortedLessons(); let i = index"
                 hideToggle
                 (click)="setLessonDetail(lesson)"
               >
@@ -98,7 +83,7 @@
           <div class="button-wrapper">
             <button
               type="button"
-              mat-raised-button
+              mat-stroked-button
               color="primary"
               matTooltip="criar Lição"
               aria-label="create Lição"
@@ -106,7 +91,7 @@
                 courseService.moduleDetail.id
               }}/new-lesson"
             >
-              <mat-icon>note_add</mat-icon>
+              adicionar lição
             </button>
           </div>
         </mat-card>

@@ -7,7 +7,7 @@
             <div class="form-group">
               <div>
                 <img
-                  [src]="courseService.courseDetail.imageUrl"
+                  [src]="getUrlImageCapa(courseService.courseDetail.id)"
                   class="detail-img"
                 />
               </div>
@@ -25,17 +25,26 @@
             <mat-card-title *ngIf="!isEdit">{{
               "labelNewModule" | translate
             }}</mat-card-title>
-            <mat-card-title *ngIf="isEdit">{{
-              "labelEditModule" | translate
-            }}</mat-card-title>
+          
+
+            <div class="row">
+              <div class="col-md-6">
 
             <mat-form-field>
-              <input matInput placeholder="Numéro" formControlName="number" />
+              <input matInput placeholder="Numero" formControlName="number" type=”number” />
             </mat-form-field>
 
+            </div>
+            <div class="col-md-6">
             <mat-form-field>
               <input matInput placeholder="Nome" formControlName="name" />
             </mat-form-field>
+            </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+
 
             <mat-form-field>
               <input
@@ -44,6 +53,9 @@
                 formControlName="description"
               />
             </mat-form-field>
+            </div>
+              <div class="col-md-6">
+
 
             <mat-form-field>
               <mat-label>Data Liberação</mat-label>
@@ -61,6 +73,11 @@
               <mat-datepicker #picker></mat-datepicker>
               <!-- #enddocregion toggle -->
             </mat-form-field>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+
             <mat-form-field>
               <input
                 matInput
@@ -68,6 +85,9 @@
                 formControlName="createdby"
               />
             </mat-form-field>
+            </div>
+              <div class="col-md-6">
+
             <mat-form-field>
               <input
                 matInput
@@ -75,6 +95,8 @@
                 formControlName="duration"
               />
             </mat-form-field>
+            </div>
+</div>
 
             <div class="button-wrapper">
               <button
@@ -85,7 +107,7 @@
                 aria-label="create module"
                 (click)="createModule()"
               >
-                <mat-icon>save</mat-icon>
+                Salvar
               </button>
             </div>
           </div>

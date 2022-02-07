@@ -46,36 +46,40 @@ export class CourseService {
     // need to build URL based on category id
     const courseListUrl = this.urlService.courseListUrl;
 
+    
+
     return this.httpClient
-      .get<Course[]>(courseListUrl)
-      .pipe(tap(_ => console.log('fetched course')));
+      .get<Course[]>(courseListUrl);
   }
   getCourse(id: number): Observable<Course> {
     const courseListUrl = this.urlService.courseListUrl;
 
-    const obj = this.httpClient.get<Course>(courseListUrl + '/' + id);
+    return this.httpClient.get<Course>(courseListUrl + '/' + id);
 
-    obj.toPromise().then(res => {
-      this.courseDetail = res;
-    });
-
-    return obj;
+    
   }
   getCourseByName(name: string): Observable<Course[]> {
-    const courseListUrlByName = this.urlService.courseListUrlByName;
+    const courseListUrlByName = this.urlService.searchCoursesUrl;
 
-    return this.httpClient.get<Course[]>(courseListUrlByName);
+    return this.httpClient.get<Course[]>(courseListUrlByName + '/' + name);
   }
 
-  searchCourse(theKeyword: string): Observable<Course[]> {
+  fetchImageCapa(id: number):Observable<Blob>{
+    
+    const courseListUrl = this.urlService.courseListUrl;
+
+    return this.httpClient.get(courseListUrl + '/' + id + '/imageCapa', { responseType: 'blob' });
+    
+  }
+  searchCourse(name: string): Observable<Course[]> {
     // need to build URL based on the keyword
-    console.log('searchCourse ' + theKeyword);
-    return this.getCourseByName(theKeyword);
+    console.log('searchCourse ' + name);
+    return this.getCourseByName(name);
   }
 
-  deleteCourse(): Observable<{}> {
+  deleteCourse(id: number): Observable<{}> {
     return this.httpClient.delete(
-      this.urlService.courseListUrl + '/' + this.courseDetail.id,
+      this.urlService.courseListUrl + '/' + id,
       this.httpOptions
     );
     /* .pipe(catchError(this.handleError)) */
@@ -84,18 +88,18 @@ export class CourseService {
     this.navigationService.navigateToCourseEdit(this.courseDetail.id);
   }
 
-  saveCourse(course: Course, selectedFile: string) {
-    console.log('save ' + course);
+  saveCourse(course: Course) {
+    console.log('save ' + course.name);
     return this.httpClient.post(
       this.urlService.courseListUrl,
       course,
       this.httpOptions
     );
   }
-  updateCourse() {
+  updateCourse(course:Course) {
     return this.httpClient.put<Course>(
       this.urlService.courseListUrl + '/' + this.courseDetail.id,
-      this.courseDetail,
+      course,
       this.httpOptions
     );
   }
@@ -210,8 +214,12 @@ export class CourseService {
     } else {
       createModuleForm.patchValue(this.moduleDetail);
     }
+    
   }
 
+  public getUrlImageCapa(id:number){
+    return this.urlService.getUrlImageCapa(id);
+  }
   setModuleById(theModuleId: number) {
     this.setModuleDEtail(
       this.courseDetail.modules.find(module => module.id == theModuleId)

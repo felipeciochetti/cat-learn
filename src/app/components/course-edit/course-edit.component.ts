@@ -10,6 +10,9 @@ import {
   ConfirmDialogModel,
   ConfirmDialogComponent
 } from '../confirm-dialog/confirm-dialog.component';
+import { CartService } from 'src/app/services/cart.service';
+import { CartItem } from 'src/app/model/cartItem';
+import { Course } from 'src/app/model/course';
 
 @Component({
   selector: 'app-course-edit',
@@ -22,7 +25,8 @@ export class CourseEditComponent implements OnInit {
     private route: ActivatedRoute,
     private navigationService: NavigationService,
     public dialog: MatDialog,
-    public messageService: MessagesService
+    public messageService: MessagesService,
+    public cartService: CartService,
   ) {}
 
   options = {
@@ -30,58 +34,18 @@ export class CourseEditComponent implements OnInit {
     keepAfterRouteChange: false
   };
 
+    course : Course ;
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe(() => {
-      this.handleProductDetails();
-    });
+    this.course =  history.state;
+
   }
 
-  handleProductDetails() {
-    // get the "id" param string. convert string to a number using the "+" symbol
-    const theCourseId: number = +this.route.snapshot.paramMap.get('id');
+  
+  updateCourse(): void{
 
-    this.courseService.getCourse(theCourseId);
   }
 
-  setModuleDetail(moduleDetail: Module) {
-    this.courseService.setModuleDEtail(moduleDetail);
-    this.navigationService.navigateToModuleDetail(
-      this.courseService.courseDetail.id,
-      moduleDetail.id
-    );
-  }
+  
 
-  editCourse() {
-    this.courseService.editCourse();
-  }
-
-  confirmDialogDelete(): void {
-    const message = `Deseja deletar o curso?`;
-
-    const dialogData = new ConfirmDialogModel('Confirmar', message);
-
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: '400px',
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        this.deleteCourse();
-        console.log('');
-      }
-    });
-  }
-  deleteCourse() {
-    this.courseService.deleteCourse().subscribe(
-      res => {
-        this.messageService.success('Deletado com Sucesso', this.options);
-        this.navigationService.navigateToCourses();
-      },
-      error => {
-        this.messageService.error(error.error, this.options);
-        console.log(error);
-      }
-    );
-  }
 }

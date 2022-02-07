@@ -33,4 +33,7 @@ export class NavigationService {
   navigateToCourseEdit(id: number) {
     this.router.navigate(['/edit-course/' + id]);
   }
+  navigateToSearchCourse(name: string) {
+    this.router.navigate(['course/search/' + name]);
+  }
 }

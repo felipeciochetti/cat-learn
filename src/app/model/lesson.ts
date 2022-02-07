@@ -14,5 +14,6 @@ export class Lesson {
   duration: string;
   contentFilePath: string;
   contentFileName: string;
+  typeFile: string;
   module: Module;
 }

@@ -8,6 +8,7 @@ import { Module } from 'src/app/model/module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CourseService } from 'src/app/services/course.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Course } from 'src/app/model/course';
 
 @Component({
   selector: 'app-create-modules',
@@ -15,10 +16,15 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./create-modules.component.css']
 })
 export class CreateModulesComponent implements OnInit {
+
   module: Module;
   moduleList: Module[];
 
   isEdit: boolean = false;
+
+  course : Course;
+
+  idCourse: number;
 
   constructor(
     private fb: FormBuilder,
@@ -31,23 +37,37 @@ export class CreateModulesComponent implements OnInit {
   ) {}
 
   createModuleForm: FormGroup = this.fb.group({
+    id: ['', []],
+  
     name: ['', [Validators.required, Validators.minLength(4)]],
-    number: ['', [Validators.required, Validators.minLength(1)]],
+   
+    number: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
     duration: ['', [Validators.required, Validators.minLength(1)]],
     description: ['', [Validators.required, Validators.minLength(5)]],
     dateRelease: [],
-    createdby: []
+    createdby: [],
+    lessons:[[],[]]
   });
 
-  ngOnInit() {
-    // check is editing...
-    if (this.router.url.indexOf('edit') >= 0) {
-      this.isEdit = true;
-      this.handleCourseModuleEdit();
-    } else {
-      this.handleCourseModuleNew();
-    }
-  }
+  
+    ngOnInit(): void {
+      // check is editing...
+      if (this.router.url.indexOf('edit') >= 0) {
+        this.isEdit = true;
+        this.createModuleForm.patchValue(history.state);
+        
+        
+        this.route.params.subscribe(params => 
+          this.idCourse = Number.parseInt(params['idCourse']));
+      }else {
+          
+        this.course =  history.state;
+        this.idCourse = this.course.id;
+
+      } 
+    
+  
+   }
 
   createModule() {
     if (!this.createModuleForm.valid) {
@@ -56,41 +76,32 @@ export class CreateModulesComponent implements OnInit {
 
     this.module = Object.assign({}, this.createModuleForm.value);
 
-    if (this.module.id > 0) {
-      this.moduleService.updateModule(this.module);
-    } else {
-      this.saveNewModule();
-    }
 
-    this.moduleService.navigationToCourse();
+    
+
+    this.saveModule();
+
+    
   }
-
-  saveNewModule() {
-    this.moduleService.saveModule(this.module).subscribe(
+  saveModule() {
+     this.moduleService.saveModule(this.module,this.idCourse).subscribe(
       (newHero: Module) => {
+        
         this.messagesService.success('Salvo com Sucesso', null);
-        this.courseService.courseDetail.modules.push(newHero);
       },
       error => {
         this.messagesService.error(error.error, null);
         console.log(error);
       }
     );
-   }
+    this.navigationService.navigateToCourses();
 
-  handleCourseModuleEdit() {
-    const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
-    const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
 
-    this.courseService.handleCourseModuleEdit(
-      theCourseId,
-      theModuleId,
-      this.createModuleForm
-    );
   }
-  handleCourseModuleNew() {
-    const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
 
-    this.courseService.handleCourseModuleNew(theCourseId);
+  
+  
+  public getUrlImageCapa(id:number){
+    return this.courseService.getUrlImageCapa(id);
   }
 }

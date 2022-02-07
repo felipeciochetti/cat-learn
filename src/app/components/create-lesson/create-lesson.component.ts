@@ -9,6 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { Module } from 'src/app/model/module';
+import { Course } from 'src/app/model/course';
+
 
 @Component({
   selector: 'app-create-lesson',
@@ -17,6 +20,10 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class CreateLessonComponent implements OnInit {
   lesson: Lesson;
+  module:Module;
+  course:Course;
+
+  idModule: number;
 
   isEdit = false;
   isChangeFile = false;
@@ -38,6 +45,7 @@ export class CreateLessonComponent implements OnInit {
   ) {}
 
   createLessonForm: FormGroup = this.fb.group({
+    id: ['', []],
     name: ['', [Validators.required, Validators.minLength(4)]],
     number: ['', [Validators.required, Validators.minLength(1)]],
     duration: ['', [Validators.required, Validators.minLength(1)]],
@@ -48,13 +56,24 @@ export class CreateLessonComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // check is editing...
-    if (this.router.url.indexOf('edit') >= 0) {
+     // check is editing...
+     if (this.router.url.indexOf('edit') >= 0) {
       this.isEdit = true;
-      this.handleCourseModuleLessonEdit();
-    } else {
-      this.handleCourseModuleLessonNew();
-    }
+      this.createLessonForm.patchValue(history.state);
+      
+      
+      this.route.params.subscribe(params => 
+        this.idModule = Number.parseInt(params['idModule']));
+    }else {
+        
+      this.module =  history.state;
+      this.idModule = this.module.id;
+
+    } 
+  
+
+
+
   }
 
   createLesson() {
@@ -64,19 +83,10 @@ export class CreateLessonComponent implements OnInit {
 
     this.lesson = Object.assign({}, this.createLessonForm.value);
 
-    this.lesson.contentFileName =
-      this.selectedFiles == null ? '' : this.selectedFiles.name;
+    
+    this.saveNewLesson();
+    
 
-    if (this.isEdit) {
-      this.updateLesson();
-    } else {
-      this.saveNewLesson();
-    }
-
-    this.lessonService.navigationToModule(
-      this.courseService.courseDetail.id,
-      this.courseService.moduleDetail.id
-    );
   }
 
   selectFile(event): void {
@@ -100,7 +110,8 @@ export class CreateLessonComponent implements OnInit {
           if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round((100 * event.loaded) / event.total);
           } else if (event instanceof HttpResponse) {
-            this.message = event.body.message;
+           
+            this.showMsgSucess();
           }
         },
         err => {
@@ -111,43 +122,27 @@ export class CreateLessonComponent implements OnInit {
       );
     this.selectedFiles = undefined;
   }
-
-  handleCourseModuleLessonEdit() {
-    const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
-    const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
-    const theLessonId: number = +this.route.snapshot.paramMap.get('idLesson');
-
-    this.courseService.handleCourseModuleLessonEditDetails(
-      theCourseId,
-      theModuleId,
-      theLessonId,
-      this.createLessonForm
-    );
+  showMsgSucess() {
+    this.messagesService.success('Salvo com Sucesso', null);
+  this.createLessonForm.reset();
+ 
+    
   }
 
-  handleCourseModuleLessonNew() {
-    const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
-    const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
-
-    this.courseService.handleCourseModuleLessonNew(theCourseId, theModuleId);
-  }
-
-  updateLesson() {
-    this.lessonService.updateLesson(this.lesson).subscribe(res => {
-      if (this.isChangeFile != null) {
-        // this.upload(res.code);
-      }
-    });
-  }
-
+  
+  
   saveNewLesson() {
-    this.lessonService.saveLesson(this.lesson).subscribe(
-      (newHero: Lesson) => {
+
+
+    this.lessonService.saveLesson(this.lesson, this.idModule).subscribe(
+      (newLesson: Lesson) => {
         if (this.selectedFiles != null) {
-          this.upload(newHero.code);
+          this.upload(newLesson.code);
+        }else{
+         this.showMsgSucess();
         }
 
-        this.messagesService.success('Salvo com Sucesso', null);
+       
       },
       error => {
         this.messagesService.error(error.error, null);
@@ -156,4 +151,13 @@ export class CreateLessonComponent implements OnInit {
     );
     //
   }
+
+
+  public getUrlImageCapa(id:number){
+    return this.courseService.getUrlImageCapa(id);
+  }
 }
+
+
+
+

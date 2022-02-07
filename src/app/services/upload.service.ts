@@ -13,10 +13,11 @@ export class UploadService {
   ) {}
 
   uploadImage(code: string, selectedFile: string) {
+    console.log('send img...')
     const fd = new FormData();
     fd.append('file', selectedFile);
     return this.httpClient
-      .post(this.urlService.uploadImage + '/' + code, fd)
+      .post(this.urlService.uploadImageCourse + '/' + code, fd)
       .subscribe(res => {
         console.log(res);
       });
@@ -29,7 +30,7 @@ export class UploadService {
 
     const req = new HttpRequest(
       'POST',
-      this.urlService.uploadImage + '/' + code,
+      this.urlService.uploadImageCourse + '/' + code,
       formData,
       {
         reportProgress: true,

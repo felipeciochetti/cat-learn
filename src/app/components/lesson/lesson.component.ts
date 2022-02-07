@@ -21,6 +21,9 @@ import {
   styleUrls: ['./lesson.component.css']
 })
 export class LessonComponent implements OnInit {
+
+url = '';
+
   constructor(
     public lessonService: LessonsService,
     public courseService: CourseService,
@@ -31,6 +34,8 @@ export class LessonComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    console.log("create component lesson");
     const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
     const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
     const theLessonId: number = +this.route.snapshot.paramMap.get('idLesson');
@@ -40,10 +45,15 @@ export class LessonComponent implements OnInit {
       theModuleId,
       theLessonId
     );
+
+    this.url = this.getContentLesson();
+    console.log(this.url);
   }
 
   setLessonDetail(lessonDetail: Lesson) {
     this.courseService.setLessonDetail(lessonDetail);
+    this.url = this.getContentLesson();
+    console.log(this.url);
     this.navigationService.navigateToLessonDetail(
       this.courseService.courseDetail.id,
       this.courseService.moduleDetail.id,
@@ -52,7 +62,7 @@ export class LessonComponent implements OnInit {
   }
 
   editLesson() {
-    this.lessonService.editLesson();
+   
   }
 
   confirmDialogDelete(): void {
@@ -73,13 +83,11 @@ export class LessonComponent implements OnInit {
     });
   }
   deleteLesson() {
-    this.lessonService.deleteLesson().subscribe(
+    this.lessonService.deleteLesson(1,1).subscribe(
       res => {
         this.messageService.success('Deletado com Sucesso', null);
-        this.navigationService.navigateToModuleDetail(
-          this.courseService.courseDetail.id,
-          this.courseService.moduleDetail.id
-        );
+        this.navigationService.navigateToCourseDetail(
+          this.courseService.courseDetail.id);
       },
       error => {
         this.messageService.error(error.error, null);
@@ -87,4 +95,17 @@ export class LessonComponent implements OnInit {
       }
     );
   }
+
+  getContentLesson(){
+
+    if(this.courseService.lessonDetail.typeFile == ".pdf"){
+      return this.lessonService.getContentPdfLesson();
+      
+    }else{
+      return this.lessonService.getContentStreamLesson();
+
+
+    }
+  }
+
 }
