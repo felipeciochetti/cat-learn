@@ -18,7 +18,7 @@ import { ModulesService } from 'src/app/services/modules.service';
 
 @Component({
   selector: 'app-course-detail',
-  templateUrl: './course-detail.component.html',
+  templateUrl: './course-detail.component-teste.html',
   styleUrls: ['./course-detail.component.css']
 })
 export class CourseDetailComponent implements OnInit {
