@@ -1,58 +1,84 @@
-<mat-toolbar
-  color="primary"
-  class="mat-toolbar app-toolbar no-print mat-primary mat-toolbar-multiple-rows"
->
-  <mat-toolbar-row class="mat-toolbar-row">
-    <!--
-      <button (click)="useLanguage('en')">en</button>
-      <button (click)="useLanguage('pt')">pt</button>
-      <i class="fas fa-language"></i>
-    -->
-    <button routerLink="/course" mat-button>
-      <span class="mat-button-wrapper">
-        <span>Cat Learn</span>
-      </span>
-    </button>
+<header class="header">
+  <div class="header__top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="header__top__left">
+            <ul>
+              <li>
+                <i
+                  class="material-icons"
+                  role="button"
+                  href="#"
+                  id="dropdownMenuLink"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  menu
+                </i>
 
-    <button routerLink="/new-course" mat-button>
-      <span class="mat-button-wrapper">
-        <span>{{ "sidebar.newCourse" | translate }}</span>
-      </span>
-    </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" routerLink="/new-course"
+                    >novo curso</a
+                  >
+                </div>
+              </li>
 
-    <span class="example-spacer"></span>
-    <app-search-toolbar></app-search-toolbar>
- 
- 
-    
-    
-    
-    <app-cart-status></app-cart-status>
-  
-    
-    
-<!--
-    <button mat-icon-button routerLink="/cart-details">
-      <mat-icon ><i class="fas fa-shopping-cart" ></i></mat-icon>
-      
-    </button>
-  -->
-  
-      <app-login-status></app-login-status>
-    
-  </mat-toolbar-row>
-</mat-toolbar>
+              <li><i class="fa fa-envelope"></i> cbg@gmail.com</li>
+              <li>Clube Brasileiro do Gato</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="header__top__right">
+            <div class="header__top__right__social"></div>
 
-<!-- <div class="form-header">
-  <input
-    #myInput
-    type="text"
-    placeholder="Search for products ..."
-    class="au-input au-input-xl"
-  />
-
-  <button class="au-btn-submit">
-    Search
-  </button>
-</div>
--->
+            <div class="header__top__right__auth">
+              <a routerLink="/login"><i class="fa fa-user"></i> Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="header__logo">
+          <a routerLink="/home" class="logo">Cat Learn</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero__search">
+          <div class="hero__search__form">
+            <form action="#">
+              <div class="hero__search__categories">
+                Cursos
+                <span class="arrow_carrot-down"></span>
+              </div>
+              <input type="text" placeholder="Pesquise por Cursos" />
+              <button type="submit" class="site-btn">Pesquisar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="header__cart">
+          <ul>
+            <li>
+              <a href="#"><i class="fa fa-heart"></i> <span>1</span></a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a>
+            </li>
+          </ul>
+          <div class="header__cart__price">item: <span>$150.00</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="humberger__open">
+      <i class="fa fa-bars"></i>
+    </div>
+  </div>
+</header>

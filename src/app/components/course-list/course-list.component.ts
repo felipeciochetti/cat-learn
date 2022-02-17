@@ -8,7 +8,7 @@ import { CaroseulService } from 'src/app/services/caroseul.service';
 
 @Component({
   selector: 'app-course-list',
-  templateUrl: './course-list.component.html',
+  templateUrl: './course-list.component copy.html',
   styleUrls: ['./course-list.component.css']
 })
 export class CourseListComponent implements OnInit {

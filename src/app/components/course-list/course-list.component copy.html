@@ -1,31 +1,13 @@
-<div class="main-content">
-  <div class="container-fluid">
-    <div class="row">
-      <div *ngFor="let course of courses" class="col-md-3">
-        <div class="card" style="width: 18rem; margin:10px">
-          <a routerLink="/courses/{{ course.id }}">
-            <img style="width: 18rem;height:10rem"
-              class="card-img-top"
-              
-              alt="Card image cap"
-              [src]="getUrlImageCapa(course.id)"
-            />
-          </a>
-          {{course.imageToShow}}
-          <div class="card-body">
-            <mat-card-title>
-              <div class="text-title">
-                <h2>{{ course.name }}</h2>
-              </div>
-            </mat-card-title>
-            <mat-card-subtitle>
-              <div class="text-description">
-                <p>{{ course.description }}</p>
-              </div>
-            </mat-card-subtitle>
-          </div>
-        </div>
+<owl-carousel-o [options]="customOptions">
+  <ng-container *ngFor="let course of courses">
+    <ng-template carouselSlide [id]="course.id">
+      <a routerLink="/courses/{{ course.id }}">
+        <img src="assets/img/banner/banner-1.jpg" alt="Card image cap" />
+      </a>
+      <div class="featured__item__text">
+        <h5>{{course.name}}</h5>
+        <h6>{{ course.price | currency: "USD" }}</h6>
       </div>
-    </div>
-  </div>
-</div>
+    </ng-template>
+  </ng-container>
+</owl-carousel-o>
